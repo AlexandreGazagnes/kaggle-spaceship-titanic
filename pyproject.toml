@@ -50,6 +50,9 @@ ipython = "^8.16.1"
 pep8 = "^1.7.1"
 
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.26.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
