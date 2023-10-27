@@ -47,6 +47,7 @@ setuptools = "^68.2.2"
 ipykernel = "^6.26.0"
 jupyter-contrib-nbextensions = "^0.7.0"
 ipython = "^8.16.1"
+pep8 = "^1.7.1"
 
 
 [build-system]
