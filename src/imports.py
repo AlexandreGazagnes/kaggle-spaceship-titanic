@@ -4,6 +4,7 @@ import datetime
 import logging
 import pickle
 import warnings
+import string
 
 import pandas as pd
 import numpy as np
@@ -33,3 +34,6 @@ from sklearn.compose import *
 
 from imblearn.under_sampling import *
 from imblearn.pipeline import Pipeline as Pipeline
+
+
+cab_dict = {i: j for j, i in enumerate(string.ascii_uppercase)}

@@ -69,11 +69,11 @@ def resultize(grid: GridSearchCV, head: int = 10):
 # RandomSh
 
 
-# param_grid = {
-#     "estimator":[ RandomForestClassifier(),],
-#     "log_transformer__threshold":[ 0.5,1, 3,],
-#     "preprocessor__transformers":[ t1,]
-#     "sampler_1":[ "passthrough",],
-#     "sampler_2":[ "passthrough",],
-#     "scaler":[ "passthrough"],
-# }
+param_grid = {
+    "estimator":[ RandomForestClassifier(),],
+    "log_transformer__threshold":[ 0.5,1, 3,],
+    "preprocessor__transformers":[ t1,]
+    "sampler_1":[ "passthrough",],
+    "sampler_2":[ "passthrough",],
+    "scaler":[ "passthrough"],
+}

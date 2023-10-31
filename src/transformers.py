@@ -1,15 +1,58 @@
 from src.imports import *
 
 
-class ColumnSelector(TransformerMixin, BaseEstimator):
+
+    class FeatEnhancer(BaseEstimator, TransformerMixin):
+        """Boleanize, manage name and split/cast cabin"""
+
+
+        def __init__(self, bool_cols=["CryoSleep", "VIP"],split_cols=["Cabin"])
+            """init method """
+
+            self.bool_cols = bool_cols
+            self.split_cols = split_cols
+
+        def fit(self, X, y=None):
+            """fit"""
+            
+            return self
+
+        def transform(self, X, y=None):
+            """transform"""
+
+            _X = X.copy()
+
+            # bool cols => 1 /0
+            for col in self.bool_cols : 
+                _X[col] = _X[col].replace({True: 1, False: 0})
+
+            # cabins            
+            for col in self.split_cols :
+                for i in range(3) : 
+                    _X[f"_{col}_{i}"] = _X[col].apply(lambda val : val.split("/")[i].upper() if isinstance(val, str) else val  )
+                    try : 
+                        _X[f"_{col}_{i}"] = _X[f"_{col}_{i}"].astype(float)
+                    except Exception as e : 
+                        _X[f"_{col}_{i}_int"] =  _X[f"_{col}_{i}"].replace(cab_dict)
+
+            # split Name
+            # _X.Name.apply(lambda i : len(i.split(" ")) if isinstance(i, str) else i) # no because only 2 on train
+            _X["_len_Name"] = _X.Name.apply(lambda i : len(i) if isinstance(i, str) else i)
+            _X["_FirstName"] = _X.Name.apply(lambda i : i.split(" ")[0] if isinstance(i, str) else i)
+            _X["_LastName"] = _X.Name.apply(lambda i : i.split(" ")[1] if isinstance(i, str) else i)
+            family_dict = _X._LastName.value_counts().to_dict()
+            _X["_FamilySize"] = _X["_LastName"].replace(family_dict)
+
+            return _X
+
+class ColumnCleaner(TransformerMixin, BaseEstimator):
     """Selects columns from a dataframe."""
 
     def __init__(
-        self, drop_cols=[], clean_cols=["PassengerId", "Cabin", "Name", "Cabin"]
+        self, clean_cols=["PassengerId", "Cabin", "Name","_FirstName", "_FirstName" ]
     ) -> None:
         """Initialize the ColumnSelector class."""
 
-        self.drop_cols = drop_cols
         self.clean_cols = clean_cols
 
     def fit(self, X, y=None):
@@ -18,10 +61,32 @@ class ColumnSelector(TransformerMixin, BaseEstimator):
 
     def transform(self, X, y=None):
         """Transform the ColumnSelector class."""
-        X = X.drop(self.clean_cols, axis=1)
-        X = X.drop(self.drop_cols, axis=1)
 
-        return X
+        _X = X.drop(columns=self.clean_cols, errors="ignore").copy()
+
+        return _X
+
+class ColumnSelector(TransformerMixin, BaseEstimator):
+    """Selects columns from a dataframe."""
+
+    def __init__(
+        self, clean_cols=["PassengerId", "Cabin", "Name","_FirstName", "_FirstName" ]
+    ) -> None:
+        """Initialize the ColumnSelector class."""
+
+        self.clean_cols = clean_cols
+
+    def fit(self, X, y=None):
+        """Fit the ColumnSelector class."""
+        return self
+
+    def transform(self, X, y=None):
+        """Transform the ColumnSelector class."""
+
+        _X = X.drop(columns=self.clean_cols, errors="ignore").copy()
+
+        return _X
+
 
 
 class LogTransformer(BaseEstimator, TransformerMixin):
@@ -40,9 +105,11 @@ class LogTransformer(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         """Transform the LogTransformer class."""
 
+        _X = X.copy()
+
         # sep num cat
-        num = X.select_dtypes(include=np.number)
-        cat = X.select_dtypes(exclude=np.number)
+        num = _X.select_dtypes(include=np.number)
+        cat =_X.select_dtypes(exclude=np.number_)
 
         # skew threshold
         skew = num.skew()
@@ -55,19 +122,7 @@ class LogTransformer(BaseEstimator, TransformerMixin):
         dont_log = num.loc[:, dont_log_columns]
 
         # concat
-        X = pd.concat([cat, dont_log, do_log], axis=1, ignore_index=True)
-        X.columns = cat.columns.tolist() + dont_log_columns + do_log_columns
+        _X = pd.concat([cat, dont_log, do_log], axis=1, ignore_index=True)
+        _X.columns = cat.columns.tolist() + dont_log_columns + do_log_column_s
 
-        return X
-
-    class Booleanizer(BaseEstimator, TransformerMixin):
-        """Boleanize"""
-
-        def fit(self, X, y=None):
-            """fit"""
-            return self
-
-        def transform(self, X, y=None):
-            """transform"""
-
-        cols = X.select_
+        return _X
