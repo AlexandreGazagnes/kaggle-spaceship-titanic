@@ -59,3 +59,15 @@ class LogTransformer(BaseEstimator, TransformerMixin):
         X.columns = cat.columns.tolist() + dont_log_columns + do_log_columns
 
         return X
+
+    class Booleanizer(BaseEstimator, TransformerMixin):
+        """Boleanize"""
+
+        def fit(self, X, y=None):
+            """fit"""
+            return self
+
+        def transform(self, X, y=None):
+            """transform"""
+
+        cols = X.select_
