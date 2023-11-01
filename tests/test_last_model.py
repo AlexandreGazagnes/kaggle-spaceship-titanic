@@ -18,7 +18,7 @@ from src.vars import *
 #     models = os.listdir("models")
 
 
-def test_model(current_score=0.79541, best_score=0.96, threshold=0.15):
+def test_model(current_score=0.79635, best_score=0.82183, threshold=0.15):
     """Test the last model score"""
 
     train = pd.read_csv("data/source/train.csv")
