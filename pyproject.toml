@@ -48,6 +48,8 @@ ipykernel = "^6.26.0"
 jupyter-contrib-nbextensions = "^0.7.0"
 ipython = "^8.16.1"
 pep8 = "^1.7.1"
+kaggle = "^1.5.16"
+catboost = "^1.2.2"
 
 
 [tool.poetry.group.dev.dependencies]

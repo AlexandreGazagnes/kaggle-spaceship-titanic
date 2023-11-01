@@ -6,6 +6,10 @@ import pickle
 import warnings
 import string
 
+from itertools import product
+
+from IPython.display import display, HTML
+
 import pandas as pd
 import numpy as np
 
@@ -31,9 +35,14 @@ from sklearn.linear_model import *
 from sklearn.ensemble import *
 from sklearn.preprocessing import *
 from sklearn.compose import *
+from sklearn.experimental import enable_halving_search_cv
+from sklearn.model_selection import HalvingGridSearchCV, HalvingRandomSearchCV
 
 from imblearn.under_sampling import *
 from imblearn.pipeline import Pipeline as Pipeline
 
+from xgboost import XGBClassifier, XGBRFClassifier
+from lightgbm import LGBMClassifier
+from catboost import CatBoostClassifier
 
-cab_dict = {i: j for j, i in enumerate(string.ascii_uppercase)}
+# from sklearn.ensemble import StackingClassifier
