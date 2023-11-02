@@ -60,7 +60,7 @@ class FeatEnhancer(BaseEstimator, TransformerMixin):
         family_dict = _X._LastName.value_counts().to_dict()
         _X["_FamilySize"] = _X["_LastName"].replace(family_dict)
 
-        display(_X.head(1))
+        # display(_X.head(1))
 
         return _X
 
@@ -85,7 +85,7 @@ class ColumnCleaner(TransformerMixin, BaseEstimator):
         """Transform the ColumnSelector class."""
 
         _X = X.copy().drop(columns=self.clean_cols, errors="ignore")
-        display(_X.head(1))
+        # display(_X.head(1))
 
         return _X
 
@@ -114,7 +114,7 @@ class ColumnSelector(TransformerMixin, BaseEstimator):
 
         if self.drop_cols:
             _X = _X.drop(columns=self.drop_cols, errors="ignore")
-        display(_X.head(1))
+        # display(_X.head(1))
 
         return _X
 

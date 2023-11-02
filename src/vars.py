@@ -6,9 +6,9 @@ from src.transformers import JustNumTransformer as JNT
 from src.transformers import NumOneHotTransformer as NOT
 
 scaler_list = [
-    "passthrough",
+    # "passthrough",
     StandardScaler(),
-    RobustScaler(),
+    # RobustScaler(),
     # Normalizer(),
     # QuantileTransformer(n_quantiles=100),
     # QuantileTransformer(n_quantiles=100, output_distribution="uniform"),
@@ -23,9 +23,9 @@ transformers_list = [
     JNT.sca(imputer="k", scaler=StandardScaler),
     # JNT.sca(imputer="s", scaler=StandardScaler),
     # JNT.pca(imputer="k", percentage_var=60),
-    JNT.pca(imputer="k", percentage_var=80),
-    JNT.pca(imputer="k", percentage_var=90),
-    JNT.pca(imputer="k", percentage_var=95),
+    # JNT.pca(imputer="k", percentage_var=80),
+    # JNT.pca(imputer="k", percentage_var=90),
+    # JNT.pca(imputer="k", percentage_var=95),
     # JNT.pca(imputer="k", percentage_var=99),
     # # {OneHot},
     # NOT.base(),
