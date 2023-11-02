@@ -2,162 +2,85 @@ from src.imports import *
 from src.helpers import *
 
 # passthrough
-_passthrough = "passthrough"
+passthrough = "passthrough"
 
 
 # Just imputer
-_knIm = Pipeline(steps=[("imputer", KNNImputer())])
-_simIm = Pipeline(steps=[("imputer", SimpleImputer(strategy="median"))])
 
 
-# Imputer Scaler
-_knIm_sca = Pipeline(steps=[("imputer", KNNImputer()), ("scaler", StandardScaler())])
-_simIm_sca = Pipeline(
-    steps=[("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler())]
-)
+def imp_pipe(imputer="k"):
+    """build a simple pipeline with imputers"""
+
+    _imputer = (
+        KNNImputer() if "k" in imputer.lower() else SimpleImputer(strategy="median")
+    )
+
+    return Pipeline(
+        steps=[
+            ("imputer", _imputer),
+        ]
+    )
 
 
-# knIm_sca_pca_60 = Pipeline(
-#     steps=[
-#         ("imputer", KNNImputer()),
-#         ("scaler", StandardScaler()),
-#         ("pca", PCA(n_components=0.60)),
-#     ]
-# )
-_knIm_sca_pca_80 = Pipeline(
-    steps=[
-        ("imputer", KNNImputer()),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.80)),
-    ]
-)
-_knIm_sca_pca_90 = Pipeline(
-    steps=[
-        ("imputer", KNNImputer()),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.90)),
-    ]
-)
-_knIm_sca_pca_95 = Pipeline(
-    steps=[
-        ("imputer", KNNImputer()),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.95)),
-    ]
-)
-knIm_sca_pca_99 = Pipeline(
-    steps=[
-        ("imputer", KNNImputer()),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.99)),
-    ]
-)
+def sca_pipe(imputer="k", scaler=StandardScaler):
+    """ """
 
-# _simIm_sca_pca_60 = Pipeline(
-#     steps=[
-#         ("imputer", SimpleImputer(strategy="median")),
-#         ("scaler", StandardScaler()),
-#         ("pca", PCA(n_components=0.60)),
-#     ]
-# )
-_simIm_sca_pca_80 = Pipeline(
-    steps=[
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.80)),
-    ]
-)
-_simIm_sca_pca_90 = Pipeline(
-    steps=[
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.90)),
-    ]
-)
-_simIm_sca_pca_95 = Pipeline(
-    steps=[
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.95)),
-    ]
-)
-_simIm_sca_pca_99 = Pipeline(
-    steps=[
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-        ("pca", PCA(n_components=0.99)),
-    ]
-)
+    _imputer = (
+        KNNImputer() if "k" in imputer.lower() else SimpleImputer(strategy="median")
+    )
 
-_cat = Pipeline(steps=[("encoder", OneHotEncoder(handle_unknown="ignore"))])
+    _scaler = scaler()
 
-_cat_khi2_50 = Pipeline(
-    steps=[
-        ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ("selector", SelectPercentile(chi2, percentile=50)),
-    ]
-)
-_cat_khi2_25 = Pipeline(
-    steps=[
-        ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ("selector", SelectPercentile(chi2, percentile=25)),
-    ]
-)
-_cat_khi2_75 = Pipeline(
-    steps=[
-        ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ("selector", SelectPercentile(chi2, percentile=75)),
-    ]
-)
-_cat_khi2_90 = Pipeline(
-    steps=[
-        ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ("selector", SelectPercentile(chi2, percentile=90)),
-    ]
-)
-_cat_khi2_95 = Pipeline(
-    steps=[
-        ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ("selector", SelectPercentile(chi2, percentile=95)),
-    ]
-)
+    return Pipeline(
+        steps=[
+            ("imputer", _imputer),
+            ("scaler", _scaler),
+        ]
+    )
 
 
-# class NumTrans:
-#     """steps for column transformer"""
+def pca_pipe(imputer, percentage_var, scaler=StandardScaler):
+    """ """
 
-#     _num_passthrough = [
-#         ("num", "passthrough", make_column_selector(dtype_include=np.number)),
-#     ]
+    _imputer = (
+        KNNImputer() if "k" in imputer.lower() else SimpleImputer(strategy="median")
+    )
 
-#     _num_knn = [
-#         ("num", KNNImputer(), make_column_selector(dtype_include=np.number)),
-#     ]
-#     _num_knn_scaler = [
-#         ("num", KNNImputer(), make_column_selector(dtype_include=np.number)),
-#         ("scaler", StandardScaler(), make_column_selector(dtype_include=np.number)),
-#     ]
+    _scaler = scaler()
 
+    percentage_var = percentage_var / 100 if percentage_var > 1 else percentage_var
 
-# _onehot = [
-#     (
-#         "cat",
-#         OneHotEncoder(handle_unknown="ignore"),
-#         make_column_selector(dtype_include=object),
-#     ),
-# ]
+    return Pipeline(
+        steps=[
+            ("imputer", _imputer),
+            ("scaler", _scaler),
+            ("pca", PCA(n_components=percentage_var)),
+        ]
+    )
 
 
-# class Transformer:
-#     """Num and OneHot transformers"""
+def cat_pipe():
+    """ """
 
-#     only_num = ColumnTransformer(
-#         [_num_passthrough], remainder="drop", verbose_feature_names_out=True
-#     )
+    return Pipeline(
+        steps=[
+            ("encoder", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
 
-#     num_onehot = ColumnTransformer(
-#         [_num_passthrough, _onehot], remainder="drop", verbose_feature_names_out=True
-#     )
+
+def cat_khi_pipe(percentile: int = 50):
+    """ """
+
+    if not 0 < percentile < 100:
+        percentile *= 100
+
+    return Pipeline(
+        steps=[
+            ("encoder", OneHotEncoder(handle_unknown="ignore")),
+            ("selector", SelectPercentile(chi2, percentile=percentile)),
+        ]
+    )
 
 
 # numeric_features = ["age", "fare"]
