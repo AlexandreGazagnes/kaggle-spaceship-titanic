@@ -1,7 +1,7 @@
 import pytest
 
 from src.imports import *
-from src.class_transformers import *
+from src.transformers import *
 from src.tools import *
 from src.helpers import *
 from src.vars import *
