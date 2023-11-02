@@ -1,21 +1,10 @@
 import pytest
 
 from src.imports import *
-from src.transformers import *
+from src.class_transformers import *
 from src.tools import *
 from src.helpers import *
 from src.vars import *
-
-
-# def test_model(current_score=0.79541, best_score=0.96, threshold=0.1):
-#     """Test the last model score"""
-
-#     dist = best_score - current_score
-#     quantity = threshold * dist
-#     valid_score = current_score + quantity
-
-#     train = pd.read_csv("data/source/train.csv")
-#     models = os.listdir("models")
 
 
 def test_model(current_score=0.79635, best_score=0.82183, threshold=0.15):
@@ -48,5 +37,3 @@ def test_model(current_score=0.79635, best_score=0.82183, threshold=0.15):
         raise ValueError(
             f"Progress too low -> new_score {round(new_score, 4)} > {round(current_score,4)} but progress_rate {progress_rate} < threshold {threshold}"
         )
-    # quantity = threshold * dist
-    # valid_score = current_score + quantity4

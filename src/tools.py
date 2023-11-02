@@ -2,7 +2,21 @@ from src.imports import *
 from src.helpers import *
 
 
-def resultize(grid: GridSearchCV, head: int = 10):
+def cardinality(
+    param_grid: dict,
+    cv: int = 1,
+) -> int:
+    """compute the cardinality of a param_grid"""
+
+    n = len(list(product(*param_grid.values())))
+
+    return n * cv
+
+
+def resultize(
+    grid: GridSearchCV,
+    head: int = 10,
+) -> pd.DataFrame:
     """Build a dataframe from the results of a grid search."""
 
     res = grid.cv_results_
@@ -20,7 +34,7 @@ def resultize(grid: GridSearchCV, head: int = 10):
     return res.head(head)
 
 
-def cv(n=5, test_size=0.33):
+def cv(n=5, test_size=0.33) -> StratifiedShuffleSplit:
     return StratifiedShuffleSplit(n_splits=n, test_size=test_size)
 
 
@@ -28,7 +42,7 @@ def save_res(
     grid: GridSearchCV,
     fn: str = None,
     verbose: int = 0,
-):
+) -> str:
     """save grid search results to csv"""
 
     if not fn:
@@ -49,7 +63,7 @@ def save_preds(
     test: pd.DataFrame = None,
     fn: str = None,
     verbose: int = 0,
-) -> pd.DataFrame:
+) -> str:
     """make predictions on test set and save them to csv"""
 
     if not test:
@@ -77,7 +91,7 @@ def save_params(
     grid: GridSearchCV,
     fn: str = None,
     verbose: int = 0,
-):
+) -> str:
     """save grid search best params to json"""
 
     if not fn:
@@ -99,7 +113,7 @@ def save_model(
     grid: GridSearchCV,
     fn: str = None,
     verbose: int = 0,
-):
+) -> str:
     """save grid search best model to pickle"""
 
     if not fn:
@@ -118,7 +132,7 @@ def save_model(
 
 def save_predict_all(
     grid: GridSearchCV,
-    verbose=1,
+    verbose: int = 1,
 ) -> None:
     """save models, res, etc and all predictions to csv"""
 
@@ -128,3 +142,35 @@ def save_predict_all(
     save_params(grid=grid, fn=f"./params/{_now}")
     save_res(grid=grid, fn=f"./results/{_now}")
     save_preds(grid=grid, fn=f"./data/preds/{_now}")
+
+
+def commit_push(mean_test_score: float = -1.0) -> None:
+    """commit and push to github"""
+
+    mean_test_score = round(mean_test_score, 4)
+
+    if mean_test_score < 0.0:
+        raise ValueError("mean_test_score must be greater than 0")
+
+    os.system("git add .")
+    os.system(f'git commit -m "mean_test_score: {mean_test_score}"')
+    try:
+        os.system("./utils/pre-push.sh")
+    except:
+        os.system("git push")
+
+
+def preprocess(
+    pipe,
+    df,
+    n=5,
+) -> pd.DataFrame:
+    """isolate df post preprocess from pipeline"""
+
+    prepocess = pipe[:n]
+    _df = prepocess.fit_transform(df)
+    cols = preprocess[-1].get_feature_names_out()
+    cols = [i.replace("__", "_") for i in cols]
+    _df = pd.DataFrame(_df, columns=cols)
+
+    return _df

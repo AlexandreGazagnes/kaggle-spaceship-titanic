@@ -46,3 +46,6 @@ from lightgbm import LGBMClassifier
 from catboost import CatBoostClassifier
 
 # from sklearn.ensemble import StackingClassifier
+
+
+passthrough = "passthrough"
