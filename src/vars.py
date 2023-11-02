@@ -18,7 +18,7 @@ scaler_list = [
 transformers_list = [
     # JustNumTransformer
     # JNT.base(),
-    JNT.imp(imputer="k"),
+    # JNT.imp(imputer="k"),
     # JNT.imp(imputer="s"),
     JNT.sca(imputer="k", scaler=StandardScaler),
     # JNT.sca(imputer="s", scaler=StandardScaler),
@@ -58,8 +58,8 @@ pipeline = Pipeline(
 
 
 classifer_list = [
-    LogisticRegression(),
-    # RandomForestClassifier(),
+    # LogisticRegression(),
+    RandomForestClassifier(),
     # XGBClassifier(),
     # LGBMClassifier(),
     # CatBoostClassifier(),
