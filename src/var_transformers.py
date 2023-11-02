@@ -11,33 +11,35 @@ class JustNum:
 
     # passthrough
     base = ColumnTransformer(
-        transformers=[("_passthrough", passthrough, mcs(dtype_include=np.number))],
+        transformers=[
+            ("passthrough", passthrough, mcs(dtype_include=np.number)),
+        ],
         remainder="drop",
         verbose_feature_names_out=True,
     )
 
     # Just Num + imputer
     knIm = ColumnTransformer(
-        transformers=[("_knIm", imp_pipe("k"), mcs(dtype_include=np.number))],
+        transformers=[("knIm", imp_pipe("k"), mcs(dtype_include=np.number))],
         remainder="drop",
         verbose_feature_names_out=True,
     )
 
     simIm = ColumnTransformer(
-        transformers=[("_simIm", imp_pipe("s"), mcs(dtype_include=np.number))],
+        transformers=[("simIm", imp_pipe("s"), mcs(dtype_include=np.number))],
         remainder="drop",
         verbose_feature_names_out=True,
     )
 
     # Just Num + Imputer + Scaler
     knIm_sca = ColumnTransformer(
-        transformers=[("_knIm_sca", sca_pipe("k"), mcs(dtype_include=np.number))],
+        transformers=[("knIm_sca", sca_pipe("k"), mcs(dtype_include=np.number))],
         remainder="drop",
         verbose_feature_names_out=True,
     )
 
     simIm_sca = ColumnTransformer(
-        transformers=[("_simIm_sca", sca_pipe("s"), mcs(dtype_include=np.number))],
+        transformers=[("simIm_sca", sca_pipe("s"), mcs(dtype_include=np.number))],
         remainder="drop",
         verbose_feature_names_out=True,
     )
@@ -45,21 +47,21 @@ class JustNum:
     # Just num + imputer + scaler + PCA
     knIm_sca_pca_60 = ColumnTransformer(
         transformers=[
-            ("_knIm_sca_pca_60", pca_pipe("k", 60), mcs(dtype_include=np.number))
+            ("knIm_sca_pca_60", pca_pipe("k", 60), mcs(dtype_include=np.number))
         ],
         remainder="drop",
         verbose_feature_names_out=True,
     )
     knIm_sca_pca_80 = ColumnTransformer(
         transformers=[
-            ("_knIm_sca_pca_80", pca_pipe("k", 80), mcs(dtype_include=np.number))
+            ("knIm_sca_pca_80", pca_pipe("k", 80), mcs(dtype_include=np.number))
         ],
         remainder="drop",
         verbose_feature_names_out=True,
     )
     knIm_sca_pca_90 = ColumnTransformer(
         transformers=[
-            ("_knIm_sca_pca_90", pca_pipe("k", 90), mcs(dtype_include=np.number))
+            ("knIm_sca_pca_90", pca_pipe("k", 90), mcs(dtype_include=np.number))
         ],
         remainder="drop",
         verbose_feature_names_out=True,
@@ -67,14 +69,14 @@ class JustNum:
 
     knIm_sca_pca_95 = ColumnTransformer(
         transformers=[
-            ("_knIm_sca_pca_95", pca_pipe("k", 95), mcs(dtype_include=np.number))
+            ("knIm_sca_pca_95", pca_pipe("k", 95), mcs(dtype_include=np.number))
         ],
         remainder="drop",
         verbose_feature_names_out=True,
     )
     knIm_sca_pca_99 = ColumnTransformer(
         transformers=[
-            ("_knIm_sca_pca_99", pca_pipe("k", 99), mcs(dtype_include=np.number))
+            ("knIm_sca_pca_99", pca_pipe("k", 99), mcs(dtype_include=np.number))
         ],
         remainder="drop",
         verbose_feature_names_out=True,
@@ -86,7 +88,7 @@ class NumOneHot:
 
     base = ColumnTransformer(
         transformers=[
-            ("_passthrough", passthrough, mcs(dtype_include=np.number)),
+            ("passthrough", passthrough, mcs(dtype_include=np.number)),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
         ],
         remainder="drop",
@@ -95,7 +97,7 @@ class NumOneHot:
 
     knIm = ColumnTransformer(
         transformers=[
-            ("_knIm", imp_pipe("k"), mcs(dtype_include=np.number)),
+            ("knIm", imp_pipe("k"), mcs(dtype_include=np.number)),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
         ],
         remainder="drop",
@@ -104,7 +106,7 @@ class NumOneHot:
 
     simIm = ColumnTransformer(
         transformers=[
-            ("_simIm", imp_pipe("s"), mcs(dtype_include=np.number)),
+            ("simIm", imp_pipe("s"), mcs(dtype_include=np.number)),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
         ],
         remainder="drop",
@@ -114,7 +116,7 @@ class NumOneHot:
     # Just Num + Imputer + Scaler + onehot
     knIm_sca = ColumnTransformer(
         transformers=[
-            ("_knIm_sca", sca_pipe("k"), mcs(dtype_include=np.number)),
+            ("knIm_sca", sca_pipe("k"), mcs(dtype_include=np.number)),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
         ],
         remainder="drop",
@@ -123,7 +125,7 @@ class NumOneHot:
 
     simIm_sca = ColumnTransformer(
         transformers=[
-            ("_simIm_sca", sca_pipe("s"), mcs(dtype_include=np.number)),
+            ("simIm_sca", sca_pipe("s"), mcs(dtype_include=np.number)),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
         ],
         remainder="drop",
@@ -173,7 +175,7 @@ class NumOneHot:
         transformers=[
             (
                 "_knIm_sca_pca_99",
-                _pca_pipe("k", 99),
+                pca_pipe("k", 99),
                 mcs(dtype_include=np.number),
             ),
             ("cat", cat_pipe(), mcs(dtype_include=object)),
