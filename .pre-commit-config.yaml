@@ -5,11 +5,12 @@ repos:
     rev: v4.5.0
     hooks:
     # -   id: trailing-whitespace
+    # -   id: name-tests-test
     -   id: end-of-file-fixer
     -   id: debug-statements
     -   id: double-quote-string-fixer
-    # -   id: name-tests-test
     -   id: requirements-txt-fixer
+    -   id: check-ast
     -   id: check-toml
     -   id: check-yaml
     -   id: check-json
@@ -22,7 +23,11 @@ repos:
     -   id: check-byte-order-marker
     -   id: check-added-large-files
         args: ['--maxkb=1500']
+    -   id: check-docstring-first
     -   id: check-executables-have-shebangs
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: check-vcs-permalinks
 
 # pyupgrade
 -   repo: https://github.com/asottile/pyupgrade
