@@ -1,18 +1,14 @@
-import os, sys, logging, warnings, secrets
-from IPython.display import display
+import logging
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-from sklearn.preprocessing import *
-from sklearn.decomposition import *
-
-import seaborn as sns
-import matplotlib.pyplot as plt
 import plotly.express as px
-
-
+import seaborn as sns
+from IPython.display import display
+from sklearn.decomposition import *
 from sklearn.impute import KNNImputer
+from sklearn.preprocessing import *
 
 
 class Pca:

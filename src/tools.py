@@ -1,5 +1,5 @@
-from src.imports import *
 from src.helpers import *
+from src.imports import *
 
 
 def cardinality(
@@ -167,9 +167,9 @@ def preprocess(
 ) -> pd.DataFrame:
     """isolate df post preprocess from pipeline"""
 
-    prepocess = pipe[:n]
-    _df = prepocess.fit_transform(df)
-    cols = preprocess[-1].get_feature_names_out()
+    _prepocess = pipe[:n]
+    _df = _prepocess.fit_transform(df)
+    cols = _prepocess[-1].get_feature_names_out()
     cols = [i.replace("__", "_") for i in cols]
     _df = pd.DataFrame(_df, columns=cols)
 
