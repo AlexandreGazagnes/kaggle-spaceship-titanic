@@ -56,18 +56,12 @@ repos:
         additional_dependencies: [types-all]
         exclude: ^testing/resources/
 
-# black
--   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.1.1
+# pydocstyle
+-   repo: https://github.com/pycqa/pydocstyle
+    rev: 4.0.0  # pick a git hash / tag to point to
     hooks:
-    -   id: black-jupyter
-        name: black-jupyter (python)
-        args: [--config=pyproject.toml]
-        # language_version: python3.10
-    -   id: black
-        name: black (python)
-        args : [--config=pyproject.toml]
-        # language_version: python3.10
+    -   id: pydocstyle
+        name: pydocstyle
 
 # isort
 -   repo: https://github.com/pycqa/isort
@@ -85,12 +79,33 @@ repos:
         name: pycln
         args: [--config=pyproject.toml]
 
+# vulture
+-   repo: https://github.com/jendrikseipp/vulture
+    rev: 'v2.3'  # or any later Vulture version
+    hooks:
+    -   id: vulture
+        name: vulture
+        # args: [--min-confidence=100]
+
 # # pylint
 # -   repo: https://github.com/pre-commit/mirrors-pylint
 #     rev: 3.0.2
 #     hooks:
 #     -   id: pylint
 #         args: [--rcfile=.pylintrc]
+
+# black
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 24.1.1
+    hooks:
+    -   id: black-jupyter
+        name: black-jupyter (python)
+        args: [--config=pyproject.toml]
+        # language_version: python3.10
+    -   id: black
+        name: black (python)
+        args : [--config=pyproject.toml]
+        # language_version: python3.10
 
 # pytest
 -   repo: local
@@ -100,10 +115,3 @@ repos:
         name: run_tests
         entry: .utils/pytest.sh
         stage: [commit]
-
-# pydocstyle
--   repo: https://github.com/pycqa/pydocstyle
-    rev: 4.0.0  # pick a git hash / tag to point to
-    hooks:
-    -   id: pydocstyle
-        name: pydocstyle
