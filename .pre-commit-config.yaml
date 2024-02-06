@@ -21,6 +21,7 @@ repos:
     -   id: check-docstring-first
     -   id: check-byte-order-marker
     -   id: check-added-large-files
+        args: ['--maxkb=1500']
     -   id: check-executables-have-shebangs
 
 # pyupgrade
