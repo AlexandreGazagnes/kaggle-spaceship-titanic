@@ -76,10 +76,10 @@ pyupgrade = "^3.15.0"
 [tool.pycln]
 all = true
 
-# [tool.mypy]
-# show_error_codes = true
-# ignore_missing_imports = true
-# no_strict_optional = true
+[tool.mypy]
+show_error_codes = true
+ignore_missing_imports = true
+no_strict_optional = true
 
 [tool.isort]
 line_length = 88
