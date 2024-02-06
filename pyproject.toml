@@ -20,7 +20,7 @@ pandarallel = "^1.6.5"
 # uvicorn = "^0.23.2"
 
 [tool.poetry.group.dev.dependencies]
-black = {extras = ["jupyter"], version = "^23.10.1"}
+pre-commit = "^3.6.0"
 ipykernel = "^6.26.0"
 jupyter = "^1.0.0"
 # notebook = "^7.0.6"
@@ -61,7 +61,7 @@ seaborn = "^0.13.0"
 missingno = "^0.5.2"
 
 [tool.poetry.group.qa.dependencies]
-pre-commit = "^3.6.0"
+black = {extras = ["jupyter"], version = "^23.10.1"}
 pep8 = "^1.7.1"
 mypy = "^1.6.1"
 flake8 = "^6.1.0"
