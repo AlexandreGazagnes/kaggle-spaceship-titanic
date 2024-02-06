@@ -1,59 +1,86 @@
 repos:
+
+# pre-commit-hooks
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-    -   id: trailing-whitespace
+    # -   id: trailing-whitespace
     -   id: end-of-file-fixer
-    -   id: check-yaml
     -   id: debug-statements
     -   id: double-quote-string-fixer
     -   id: name-tests-test
     -   id: requirements-txt-fixer
+    -   id: check-toml
+    -   id: check-yaml
+    -   id: check-json
+    -   id: mixed-line-ending
+        files: "\\.(py|txt|yaml|json|md|toml|lock|cfg|html|sh|js|yml)$"
+    -   id: trailing-whitespace
+        files: "\\.(py|txt|yaml|json|md|toml|lock|cfg|html|sh|js|yml)$"
+    -   id: check-case-conflict
+    -   id: check-docstring-first
+    -   id: check-byte-order-marker
+    -   id: check-added-large-files
+    -   id: check-executables-have-shebangs
 
+# pyupgrade
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:
     -   id: pyupgrade
         args: [--py39-plus]
 
+# autotpep8
 -   repo: https://github.com/hhatto/autopep8
     rev: v2.0.4
     hooks:
     -   id: autopep8
 
+# flake8
 -   repo: https://github.com/PyCQA/flake8
     rev: 7.0.0
     hooks:
     -   id: flake8
 
+# mypy
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+    rev: v1.6.1
     hooks:
     -   id: mypy
         additional_dependencies: [types-all]
         exclude: ^testing/resources/
 
+# black-jupyter
 -   repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.1.1
     hooks:
-        - id: black-jupyter
-        # It is recommended to specify the latest version of Python
-        # supported by your project here, or alternatively use
-        # pre-commit's default_language_version, see
-        # https://pre-commit.com/#top_level-default_language_version
-    # language_version: python3.10
+    -   id: black-jupyter
+        # language_version: python3.10
 
+# black
 -   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.1.1
+    rev: 23.10.1
     hooks:
-        - id: black
-        # It is recommended to specify the latest version of Python
-        # supported by your project here, or alternatively use
-        # pre-commit's default_language_version, see
-        # https://pre-commit.com/#top_level-default_language_version
-    # language_version: python3.10
+    -   id: black
+        # language_version: python3.10
+
+# isort
 -   repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
-    - id: isort
-    name: isort (python)
+    -   id: isort
+        name: isort (python)
+
+# pycln
+-   repo: https://github.com/hadialqattan/pycln
+    rev: v2.4.0 # Possible releases: https://github.com/hadialqattan/pycln/releases
+    hooks:
+    -   id: pycln
+        args: [--config=pyproject.toml]
+
+# # pylint
+# -   repo: https://github.com/pre-commit/mirrors-pylint
+#     rev: 3.0.2
+#     hooks:
+#     -   id: pylint
+#         args: [--rcfile=.pylintrc]
