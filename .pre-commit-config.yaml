@@ -55,6 +55,8 @@ repos:
     rev: 24.1.1
     hooks:
     -   id: black-jupyter
+        name: black-jupyter (python)
+        args: [--config=pyproject.toml]
         # language_version: python3.10
 
 # black
@@ -62,6 +64,8 @@ repos:
     rev: 23.10.1
     hooks:
     -   id: black
+        name: black (python)
+        args : [--config=pyproject.toml]
         # language_version: python3.10
 
 # isort
@@ -70,12 +74,14 @@ repos:
     hooks:
     -   id: isort
         name: isort (python)
+        args: [--config=pyproject.toml]
 
 # pycln
 -   repo: https://github.com/hadialqattan/pycln
     rev: v2.4.0 # Possible releases: https://github.com/hadialqattan/pycln/releases
     hooks:
     -   id: pycln
+        name: pycln
         args: [--config=pyproject.toml]
 
 # # pylint
