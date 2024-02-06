@@ -1,8 +1,10 @@
 #! /bin/bash
 
 # clear output of notebooks
-jupyter nbconvert --clear-output --inplace notebooks/*.ipynb
-jupyter nbconvert --clear-output --inplace sandbox/*.ipynb
+# jupyter nbconvert --clear-output --inplace notebooks/*.ipynb
+jupyter nbconvert --clear-output --inplace *.ipynb
+jupyter nbconvert --clear-output --inplace */*.ipynb
+jupyter nbconvert --clear-output --inplace */*/*.ipynb
 
 # transform ipynb in py and moove
 jupytext --to py ./notebooks/*.ipynb
@@ -17,12 +19,12 @@ python3 -m black ./sandbox/*.ipynb
 python3 -m black ./tests/*.py
 
 # pytest
-# python3 -m pytest 
+# python3 -m pytest
 # python3 -m pytest -vv -x -s tests/
 
-# commit and push 
+# commit and push
 git add notebooks/*
 git add src/notebooks/*
-git add sandbox/* 
+git add sandbox/*
 git commit -m "update notebooks"
 git push

@@ -18,6 +18,7 @@ pandarallel = "^1.6.5"
 # click = "^8.1.7"
 # requests = "^2.31.0"
 # uvicorn = "^0.23.2"
+jupytext = "^1.16.1"
 
 
 
@@ -91,6 +92,7 @@ multi_line_output = 3
 
 [tool.black]
 line-length = 88
+
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
