@@ -1,3 +1,8 @@
+import logging
+
+import numpy as np
+import pandas as pd
+
 from sklearn.compose import make_column_selector as mcs
 
 # from src.imports import *
@@ -5,6 +10,110 @@ from sklearn.compose import make_column_selector as mcs
 from src._base_transformers import *
 from src.helpers import *
 from src.imports import *
+
+
+class DropUniqueColumnTransformer(BaseEstimator, TransformerMixin):
+    """Drops columns with only one unique value
+
+    Agrs :
+        Optional :
+            - unique_cols : list[str] | None : list of columns to drop if they have only one unique value
+            default : None => will be found during fit
+    """
+
+    def __init__(self, unique_cols: list[str] | None = None) -> None:
+        """init method"""
+
+        self.unique_cols = unique_cols
+
+    def fit(self, X: pd.DataFrame | list | np.array, y=None):
+        """fit"""
+
+        if self.unique_cols:
+            return self
+
+        # manage df
+        if not isinstance(X, pd.DataFrame):
+            _X = pd.DataFrame(X)
+        else:
+            _X = X.copy()
+
+        # find bool cols
+        self.unique_cols = [col for col in _X.columns if _X[col].nunique() == 1]
+
+        return self
+
+    def transform(self, X, y=None) -> pd.DataFrame:
+        """transform"""
+
+        # manage df
+        if not isinstance(X, pd.DataFrame):
+            _X = pd.DataFrame(X)
+        else:
+            _X = X.copy()
+
+        # drop it
+        _X = _X.drop(columns=self.unique_cols, errors="ignore")
+
+        return _X
+
+
+class BoolColumnTransformer(BaseEstimator, TransformerMixin):
+    """Boleanizer for columns with 2 unique values
+
+    Args :
+        Optional :
+            - bool_cols : list[str] | None : list of columns to booleanize
+            default : None => will be found during fit
+    """
+
+    def __init__(self, bool_cols: list[str] | None = None) -> None:
+        """init method"""
+
+        self.bool_cols = bool_cols
+
+    def fit(self, X: pd.DataFrame | list | np.array, y=None):
+        """fit"""
+
+        if self.bool_cols:
+            return self
+
+        # manage df
+        if not isinstance(X, pd.DataFrame):
+            _X = pd.DataFrame(X)
+        else:
+            _X = X.copy()
+
+        # find bool cols
+        self.bool_cols = [col for col in _X.columns if _X[col].nunique() == 2]
+
+        return self
+
+    def transform(self, X, y=None) -> pd.DataFrame:
+        """transform"""
+
+        # manage df
+        if not isinstance(X, pd.DataFrame):
+            _X = pd.DataFrame(X)
+        else:
+            _X = X.copy()
+
+        for col in self.bool_cols:
+
+            # check if column exists
+            if not col in _X.columns:
+                continue
+
+            # find values
+            values = _X[col].unique()
+
+            # enumerate
+            dd = {values[0]: 0, values[1]: 1}
+
+            # replace
+            _X[col] = _X[col].replace(dd)
+
+        return _X
 
 
 class FeatEnhancer(BaseEstimator, TransformerMixin):
@@ -38,9 +147,9 @@ class FeatEnhancer(BaseEstimator, TransformerMixin):
         for col in self.split_cols:
             for i in range(3):
                 _X[f"_{col}_{i}"] = _X[col].apply(
-                    lambda val: val.split("/")[i].upper()
-                    if isinstance(val, str)
-                    else val
+                    lambda val: (
+                        val.split("/")[i].upper() if isinstance(val, str) else val
+                    )
                 )
                 try:
                     _X[f"_{col}_{i}"] = _X[f"_{col}_{i}"].astype(float)
@@ -92,7 +201,11 @@ class ColumnCleaner(TransformerMixin, BaseEstimator):
 class ColumnSelector(TransformerMixin, BaseEstimator):
     """Selects columns from a dataframe."""
 
-    def __init__(self, drop_cols: list = None, keep_cols: list = None) -> None:
+    def __init__(
+        self,
+        drop_cols: list[str] | None = None,
+        keep_cols: list[str] | None = None,
+    ) -> None:
         """Initialize the ColumnSelector class."""
 
         self.drop_cols = drop_cols
@@ -103,14 +216,24 @@ class ColumnSelector(TransformerMixin, BaseEstimator):
 
         return self
 
-    def transform(self, X, y=None) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame | list | np.array, y=None) -> pd.DataFrame:
         """Transform the ColumnSelector class."""
 
-        _X = X.copy()
+        # force to df
+        if not isinstance(X, pd.DataFrame):
+            _X = pd.DataFrame(X)
+        else:
+            _X = X.copy()
 
+        # select
         if self.keep_cols:
+            # verify if columns exist
+            self.keep_cols = [i for i in self.keep_cols if i in _X.columns]
+
+            # do the selection
             _X = _X.loc[:, self.keep_cols]
 
+        # drop if needed
         if self.drop_cols:
             _X = _X.drop(columns=self.drop_cols, errors="ignore")
         # display(_X.head(1))
